@@ -692,12 +692,10 @@ export async function convert(
   options?: unknown,
 ): Promise<string> {
   let extra = "";
-  let message = "Done";
 
   if (convertTo === "ico") {
     // make sure image is 256x256 or smaller
     extra = `-filter:v "scale='min(256,iw)':min'(256,ih)':force_original_aspect_ratio=decrease"`;
-    message = "Done: resized to 256x256";
   }
 
   const command = `ffmpeg ${process.env.FFMPEG_ARGS || ""} -i "${filePath}" ${extra} "${targetPath}"`;
@@ -716,7 +714,7 @@ export async function convert(
         console.error(`stderr: ${stderr}`);
       }
 
-      resolve(message);
+      resolve('completed');
     });
   });
 }
