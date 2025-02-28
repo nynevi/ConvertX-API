@@ -104,9 +104,7 @@ const app = new Elysia({
 })
   .use(cookie())
   .use(html())
-  .use(
-    staticPlugin(),
-  )
+    .get('/public/*', ({ params }: any) => _Bun.file(`public/${params['*']}`))
     .get('/test', () => {
         return true
     })
