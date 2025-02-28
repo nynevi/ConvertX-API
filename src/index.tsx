@@ -37,7 +37,7 @@ const _Bun = Bun as any
 mkdir("./data", { recursive: true }).catch(_console.error);
 const db = new Database("./data/mydb.sqlite", { create: true });
 const uploadsDir = "./data/uploads/";
-const outputDir = "./data/output/";
+const outputDir = "./public/";
 
 const AUTO_DELETE_EVERY_N_HOURS = _process.env.AUTO_DELETE_EVERY_N_HOURS
   ? Number(_process.env.AUTO_DELETE_EVERY_N_HOURS)
@@ -105,10 +105,7 @@ const app = new Elysia({
   .use(cookie())
   .use(html())
   .use(
-    staticPlugin({
-      assets: "public",
-      prefix: "",
-    }),
+    staticPlugin(),
   )
     .get('/test', () => {
         return true
