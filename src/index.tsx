@@ -104,7 +104,7 @@ const app = new Elysia({
 })
   .use(cookie())
   .use(html())
-    .get('/public/*', ({ params }: any) => file(`public/${params['*']}`))
+    //.get('/public/*', ({ params }: any) => file(`public/${params['*']}`))
     .get('/test', () => {
         return true
     })
