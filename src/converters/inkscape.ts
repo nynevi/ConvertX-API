@@ -57,7 +57,7 @@ export const properties = {
           console.error(`stderr: ${stderr}`);
         }
   
-        resolve("Done");
+        resolve("completed");
       });
     });
   }

@@ -29,7 +29,6 @@ COPY --from=install /temp/dev/node_modules node_modules
 COPY . .
 
 # ENV NODE_ENV=production
-RUN bun run build
 
 # copy production dependencies and source code into final image
 FROM base AS release
@@ -68,11 +67,10 @@ RUN apk --no-cache add calibre --repository=http://dl-cdn.alpinelinux.org/alpine
 
 COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=builder /root/.cargo/bin/resvg /usr/local/bin/resvg
-COPY --from=prerelease /app/public/generated.css /app/public/
 # COPY --from=prerelease /app/src/index.tsx /app/src/
 # COPY --from=prerelease /app/package.json .
 COPY . .
 
 EXPOSE 3000/tcp
 ENV NODE_ENV=production
-ENTRYPOINT [ "bun", "run", "./src/index.tsx" ]
+ENTRYPOINT [ "bun", "run", "--watch", "--no-hot", "--polling", "./src/index.tsx" ]

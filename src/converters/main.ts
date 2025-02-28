@@ -148,13 +148,13 @@ export async function mainConverter(
       return result;
     }
 
-    return "Done";
+    return "completed";
   } catch (error) {
     console.error(
       `Failed to convert ${inputFilePath} from ${fileType} to ${convertTo} using ${converterName}.`,
       error,
     );
-    return "Failed, check logs";
+    return "errored";
   }
 }
 
@@ -207,76 +207,11 @@ for (const converterName in properties) {
 }
 possibleInputs.sort();
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const getPossibleInputs = () => {
-  return possibleInputs;
-};
+export const getConverterName = (sourceFileType: string, targetFileType: string) => {
+  const normalizedTarget = normalizeFiletype(targetFileType)
 
-const allTargets: Record<string, string[]> = {};
+  const targets = getPossibleTargets(sourceFileType)
+  return Object.entries(targets).filter(([converter, targets]) => targets.find(t => t === normalizedTarget))?.[0]?.[0]
 
-for (const converterName in properties) {
-  const converterProperties = properties[converterName]?.properties;
 
-  if (!converterProperties) {
-    continue;
-  }
-
-  for (const key in converterProperties.to) {
-    if (allTargets[converterName]) {
-      allTargets[converterName].push(...(converterProperties.to[key] || []));
-    } else {
-      allTargets[converterName] = converterProperties.to[key] || [];
-    }
-  }
 }
-
-export const getAllTargets = () => {
-  return allTargets;
-};
-
-const allInputs: Record<string, string[]> = {};
-for (const converterName in properties) {
-  const converterProperties = properties[converterName]?.properties;
-
-  if (!converterProperties) {
-    continue;
-  }
-
-  for (const key in converterProperties.from) {
-    if (allInputs[converterName]) {
-      allInputs[converterName].push(...(converterProperties.from[key] || []));
-    } else {
-      allInputs[converterName] = converterProperties.from[key] || [];
-    }
-  }
-}
-
-export const getAllInputs = (converter: string) => {
-  return allInputs[converter] || [];
-};
-
-// // count the number of unique formats
-// const uniqueFormats = new Set();
-
-// for (const converterName in properties) {
-//   const converterProperties = properties[converterName]?.properties;
-
-//   if (!converterProperties) {
-//     continue;
-//   }
-
-//   for (const key in converterProperties.from) {
-//     for (const extension of converterProperties.from[key] ?? []) {
-//       uniqueFormats.add(extension);
-//     }
-//   }
-
-//   for (const key in converterProperties.to) {
-//     for (const extension of converterProperties.to[key] ?? []) {
-//       uniqueFormats.add(extension);
-//     }
-//   }
-// }
-
-// // print the number of unique Inputs and Outputs
-// console.log(`Unique Formats: ${uniqueFormats.size}`);

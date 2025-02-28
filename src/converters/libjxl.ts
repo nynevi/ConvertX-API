@@ -65,7 +65,7 @@ export function convert(
         console.error(`stderr: ${stderr}`);
       }
 
-      resolve("Done");
+      resolve("completed");
     });
   });
 }
