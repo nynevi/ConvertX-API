@@ -136,7 +136,7 @@ const app = new Elysia({
         const newFileName = originalFilename.replace(
             new RegExp(`${fileTypeOrig}(?!.*${fileTypeOrig})`),
             newFileExt,
-        ).replaceAll(' ', '_');
+        ).replace(/\s+/g, "_");
 
         const {lastInsertRowid} = db.query("INSERT INTO jobs (originalFilename, convertedFilename, convertTo, createdAt) VALUES (?, ?, ?, ?)").run(
             originalFilename,
