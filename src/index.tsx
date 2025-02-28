@@ -13,7 +13,7 @@ import {staticPlugin} from "@elysiajs/static";
 //@ts-ignore
 import {Database} from "bun:sqlite";
 //@ts-ignore
-import {Elysia, t} from "elysia";
+import {Elysia, t, file} from "elysia";
 import {
     getConverterName,
     getPossibleTargets,
@@ -104,7 +104,7 @@ const app = new Elysia({
 })
   .use(cookie())
   .use(html())
-    .get('/public/*', ({ params }: any) => _Bun.file(`public/${params['*']}`))
+    .get('/public/*', ({ params }: any) => file(`public/${params['*']}`))
     .get('/test', () => {
         return true
     })
